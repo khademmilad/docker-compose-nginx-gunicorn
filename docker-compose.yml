@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  django_app:
+    build: .
+    container_name: django_app_caht
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app
+      - static_vol:/app/static
+      - media_vol:/app/media
+    ports:
+      - "8000:8000"
+    depends_on:
+    - db
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_vol:/app/static
+      - media_vol:/app/media
+    ports:
+      - "80:80"
+    depends_on:
+      - django_app
+  db:
+    image: postgres:alpine3.17
+    container_name: django_db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+
+volumes:
+  static_vol:
+  media_vol:
+  postgres-data:
