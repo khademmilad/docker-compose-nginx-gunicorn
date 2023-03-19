@@ -3,7 +3,7 @@ version: "3.9"
 services:
   django:
     build: .
-    container_name: django_app_caht
+    container_name: django_app
     # env_file:
     #   - .env
     volumes:
