@@ -1,11 +1,11 @@
 version: "3.9"
 
 services:
-  django_app:
+  django:
     build: .
     container_name: django_app_caht
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     volumes:
       - ./src:/app
       - static_vol:/app/static
@@ -22,7 +22,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - django_app
+      - django
   db:
     image: postgres:alpine3.17
     container_name: django_db
