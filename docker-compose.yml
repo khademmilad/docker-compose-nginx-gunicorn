@@ -1,8 +1,9 @@
 version: "3.9"
 
 services:
-  django:
+  django_web:
     build: .
+    command: python manage.py runserver 0.0.0.0:8000
     container_name: django_app
     # env_file:
     #   - .env
@@ -11,21 +12,22 @@ services:
       - static_vol:/app/static
       - media_vol:/app/media
     ports:
-      - "8000:8000"
+      - "9000:9000"
     depends_on:
     - db
   nginx:
     build: ./nginx
     volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - static_vol:/app/static
       - media_vol:/app/media
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
-      - django
+      - django_web
   db:
     image: postgres:alpine3.17
-    container_name: django_db
+    container_name: django_db_rabinweb
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
